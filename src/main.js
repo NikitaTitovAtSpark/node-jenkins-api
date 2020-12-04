@@ -113,7 +113,7 @@ function doArgs(values, types) {
     type = type.split('|');
 
     // Is it a correct value?
-    if (type.includes(getType(value))) {
+    if (type.indexOf(getType(value)) !== -1) {
       result.push(value);
       carry = false;
     } else if (optional) {
@@ -209,7 +209,7 @@ exports.init = function (host, defaultOptions, defaultParams) {
     }
 
     // Does url contain parameters already?
-    const delim = (url.includes('?') ? '&' : '?');
+    const delim = (url.indexOf('?') !== -1 ? '&' : '?');
 
     return url + delim + paramsString;
   };
@@ -268,8 +268,8 @@ exports.init = function (host, defaultOptions, defaultParams) {
         return;
       }
 
-      if ((Array.isArray(options.successStatusCodes) && !options.successStatusCodes.includes(response.statusCode))
-        || (Array.isArray(options.failureStatusCodes) && options.failureStatusCodes.includes(response.statusCode))) {
+      if ((Array.isArray(options.successStatusCodes) && (options.successStatusCodes.indexOf(response.statusCode) !== -1))
+        || (Array.isArray(options.failureStatusCodes) && options.failureStatusCodes.indexOf(response.statusCode) !== -1)) {
         callback(`Server returned unexpected status code: ${response.statusCode}`, response);
         return;
       }
